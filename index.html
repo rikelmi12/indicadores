@@ -103,9 +103,16 @@
       background: linear-gradient(90deg, rgba(59, 130, 246, 0.16) 0%, rgba(19, 25, 38, 0.4) 100%);
       border-left: 3px solid #3b82f6;
     }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-blue-600 selection:text-white">
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-blue-600 selection:text-white pb-16 lg:pb-0">
 
   <!-- 1. TOP TICKER TAPE (COTAÇÕES DESLIZANTES EM TEMPO REAL) -->
   <div class="w-full bg-[#05070b] border-b border-terminal-border overflow-hidden py-1.5 select-none">
@@ -115,174 +122,173 @@
   </div>
 
   <!-- 2. HEADER DO TERMINAL -->
-  <header class="glass-panel sticky top-0 z-30 border-b border-terminal-border px-4 py-2.5">
-    <div class="max-w-[1920px] mx-auto flex flex-wrap items-center justify-between gap-3">
+  <header class="glass-panel sticky top-0 z-30 border-b border-terminal-border px-3 sm:px-4 py-2">
+    <div class="max-w-[1920px] mx-auto flex flex-wrap items-center justify-between gap-2">
       <!-- Logo & Status do Mercado -->
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
-            <i data-lucide="activity" class="w-5 h-5 text-white"></i>
+      <div class="flex items-center justify-between w-full sm:w-auto gap-2">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-blue-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
+            <i data-lucide="activity" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
           </div>
           <div>
-            <div class="flex items-center gap-2">
-              <h1 class="font-bold text-base tracking-tight text-white">B3 PRO <span class="text-blue-400 font-mono">TERMINAL</span></h1>
-              <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">Realtime v2.4</span>
+            <div class="flex items-center gap-1.5">
+              <h1 class="font-bold text-sm sm:text-base tracking-tight text-white">B3 PRO <span class="text-blue-400 font-mono">TERMINAL</span></h1>
+              <span class="text-[9px] sm:text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">2s Live</span>
             </div>
-            <p class="text-[11px] text-slate-400 hidden sm:block">Ações B3, FIIs, Indicadores Fundamentalistas, Análise Técnica & Macroeconomia</p>
+            <p class="text-[11px] text-slate-400 hidden xl:block">Ações B3, FIIs, Indicadores Fundamentalistas, Análise Técnica & Macroeconomia</p>
           </div>
         </div>
 
         <!-- Badge Status Pregão B3 -->
-        <div id="marketStatusBadge" class="flex items-center gap-2 px-3 py-1 rounded-full bg-terminal-card border border-terminal-border text-xs">
-          <span id="marketStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span id="marketStatusText" class="font-medium text-slate-300">Verificando B3...</span>
-          <span id="clockBRT" class="font-mono text-slate-400 border-l border-terminal-border pl-2">--:--:-- BRT</span>
+        <div id="marketStatusBadge" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-terminal-card border border-terminal-border text-[11px]">
+          <span id="marketStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+          <span id="marketStatusText" class="font-medium text-slate-300 truncate max-w-[110px] sm:max-w-none">B3...</span>
+          <span id="clockBRT" class="font-mono text-slate-400 border-l border-terminal-border pl-1.5 hidden md:inline">--:--:-- BRT</span>
         </div>
       </div>
 
       <!-- Busca Rápida Global de Ativos + Controles -->
-      <div class="flex items-center gap-2.5 flex-wrap">
+      <div class="flex items-center justify-between w-full sm:w-auto gap-1.5 sm:gap-2">
         <!-- Quick Jump Ticker -->
-        <form id="quickTickerForm" class="relative flex items-center" onsubmit="handleQuickJump(event)">
-          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 pointer-events-none"></i>
+        <form id="quickTickerForm" class="relative flex items-center flex-1 sm:flex-initial" onsubmit="handleQuickJump(event)">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 pointer-events-none"></i>
           <input
             id="quickTickerInput"
             type="text"
-            placeholder="Ir para ativo (ex: WEGE3, PETR4,AAPL)..."
-            class="bg-terminal-card border border-terminal-border focus:border-blue-500 rounded-lg pl-8 pr-16 py-1.5 text-xs text-white placeholder-slate-500 outline-none w-56 sm:w-64 transition"
+            placeholder="Ativo (ex: WEGE3, PETR4)..."
+            class="bg-terminal-card border border-terminal-border focus:border-blue-500 rounded-lg pl-8 pr-14 py-1.5 text-xs text-white placeholder-slate-500 outline-none w-full sm:w-56 md:w-64 transition"
           />
           <button type="submit" class="absolute right-1.5 px-2 py-0.5 text-[10px] font-mono bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 rounded border border-blue-500/30 transition">
-            ABRIR
+            IR
           </button>
         </form>
 
         <!-- Intervalo de Atualização -->
-        <div class="flex items-center gap-1.5 bg-terminal-card border border-terminal-border rounded-lg px-2.5 py-1 text-xs">
+        <div class="flex items-center gap-1 bg-terminal-card border border-terminal-border rounded-lg px-2 py-1.5 text-xs shrink-0">
           <i data-lucide="refresh-cw" id="refreshSpinner" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span class="text-slate-400 hidden md:inline">Auto:</span>
-          <select id="refreshIntervalSelect" onchange="changeRefreshInterval(this.value)" class="bg-transparent text-emerald-400 font-semibold font-mono outline-none cursor-pointer">
-            <option value="2000" selected class="bg-terminal-panel text-emerald-400">⚡ 2s (Turbo)</option>
-            <option value="5000" class="bg-terminal-panel text-slate-200">5s (Rápido)</option>
+          <select id="refreshIntervalSelect" onchange="changeRefreshInterval(this.value)" class="bg-transparent text-emerald-400 font-semibold font-mono outline-none cursor-pointer text-[11px] sm:text-xs">
+            <option value="2000" selected class="bg-terminal-panel text-emerald-400">⚡ 2s</option>
+            <option value="5000" class="bg-terminal-panel text-slate-200">5s</option>
             <option value="15000" class="bg-terminal-panel text-slate-200">15s</option>
             <option value="30000" class="bg-terminal-panel text-slate-200">30s</option>
             <option value="60000" class="bg-terminal-panel text-slate-200">60s</option>
           </select>
         </div>
 
-        <button onclick="refreshAllData(true)" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition shadow-sm shadow-blue-600/30">
+        <button onclick="refreshAllData(true)" title="Atualizar Agora" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition shadow-sm shadow-blue-600/30 shrink-0">
           <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-          <span>Atualizar Agora</span>
+          <span class="hidden sm:inline">Atualizar</span>
         </button>
 
-        <button onclick="toggleApiModal()" title="Configurar Token de API Opcional" class="p-1.5 rounded-lg bg-terminal-card hover:bg-terminal-hover border border-terminal-border text-slate-300 transition">
+        <button onclick="toggleApiModal()" title="Configurar Token de API Opcional" class="p-1.5 rounded-lg bg-terminal-card hover:bg-terminal-hover border border-terminal-border text-slate-300 transition shrink-0">
           <i data-lucide="settings" class="w-4 h-4"></i>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- 3. BARRA DE INDICADORES MACRO & MERCADO (CARDS DE TOPO) -->
-  <section class="max-w-[1920px] w-full mx-auto px-4 pt-3">
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+  <!-- 3. BARRA DE INDICADORES MACRO & MERCADO (SWIPEABLE NO MOBILE, GRID NO DESKTOP) -->
+  <section class="max-w-[1920px] w-full mx-auto px-3 sm:px-4 pt-2.5">
+    <div class="flex lg:grid lg:grid-cols-6 gap-2 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-1">
       
       <!-- Card 1: IBOVESPA / BOVA11 -->
-      <div onclick="selectSymbol('IBOV', 'IBOVESPA (Índice B3)', 'INDEX')" class="glass-panel rounded-xl p-3 cursor-pointer hover:border-blue-500/50 transition group">
+      <div onclick="selectSymbol('IBOV', 'IBOVESPA (Índice B3)', 'INDEX')" class="glass-panel rounded-xl p-2.5 sm:p-3 cursor-pointer hover:border-blue-500/50 transition group min-w-[165px] sm:min-w-[185px] lg:min-w-0 shrink-0 snap-start">
         <div class="flex items-center justify-between mb-1">
-          <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
+          <span class="text-[10px] sm:text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
             IBOV / BOVA11
           </span>
-          <span id="kpi-ibov-change" class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">--%</span>
+          <span id="kpi-ibov-change" class="text-[10px] sm:text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">--%</span>
         </div>
-        <div class="flex items-baseline justify-between">
-          <div id="kpi-ibov-price" class="text-lg font-bold font-mono text-white group-hover:text-blue-400 transition">Carregando...</div>
-          <span id="kpi-ibov-sub" class="text-[10px] font-mono text-slate-400">ETF R$ --</span>
+        <div class="flex items-baseline justify-between gap-1">
+          <div id="kpi-ibov-price" class="text-base sm:text-lg font-bold font-mono text-white group-hover:text-blue-400 transition">Carregando...</div>
+          <span id="kpi-ibov-sub" class="text-[10px] font-mono text-slate-400 truncate">ETF R$ --</span>
         </div>
       </div>
 
       <!-- Card 2: DÓLAR COMERCIAL (USD/BRL) -->
-      <div onclick="selectCustomTradingView('FX_IDC:USDBRL', 'Dólar Comercial (USD/BRL)')" class="glass-panel rounded-xl p-3 cursor-pointer hover:border-blue-500/50 transition group" id="card-usd">
+      <div onclick="selectCustomTradingView('FX_IDC:USDBRL', 'Dólar Comercial (USD/BRL)')" class="glass-panel rounded-xl p-2.5 sm:p-3 cursor-pointer hover:border-blue-500/50 transition group min-w-[165px] sm:min-w-[185px] lg:min-w-0 shrink-0 snap-start" id="card-usd">
         <div class="flex items-center justify-between mb-1">
-          <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
+          <span class="text-[10px] sm:text-[11px] font-semibold text-slate-400 flex items-center gap-1">
             <i data-lucide="dollar-sign" class="w-3.5 h-3.5 text-emerald-400"></i>
-            DÓLAR (USD/BRL)
+            DÓLAR (USD)
           </span>
-          <span id="kpi-usd-change" class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">--%</span>
+          <span id="kpi-usd-change" class="text-[10px] sm:text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">--%</span>
         </div>
-        <div class="flex items-baseline justify-between">
-          <div id="kpi-usd-price" class="text-lg font-bold font-mono text-white group-hover:text-emerald-400 transition">R$ --</div>
+        <div class="flex items-baseline justify-between gap-1">
+          <div id="kpi-usd-price" class="text-base sm:text-lg font-bold font-mono text-white group-hover:text-emerald-400 transition">R$ --</div>
           <span id="kpi-usd-range" class="text-[10px] font-mono text-slate-400">Máx: --</span>
         </div>
       </div>
 
       <!-- Card 3: EURO COMERCIAL (EUR/BRL) -->
-      <div onclick="selectCustomTradingView('FX_IDC:EURBRL', 'Euro Comercial (EUR/BRL)')" class="glass-panel rounded-xl p-3 cursor-pointer hover:border-blue-500/50 transition group" id="card-eur">
+      <div onclick="selectCustomTradingView('FX_IDC:EURBRL', 'Euro Comercial (EUR/BRL)')" class="glass-panel rounded-xl p-2.5 sm:p-3 cursor-pointer hover:border-blue-500/50 transition group min-w-[165px] sm:min-w-[185px] lg:min-w-0 shrink-0 snap-start" id="card-eur">
         <div class="flex items-center justify-between mb-1">
-          <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
+          <span class="text-[10px] sm:text-[11px] font-semibold text-slate-400 flex items-center gap-1">
             <i data-lucide="euro" class="w-3.5 h-3.5 text-blue-400"></i>
-            EURO (EUR/BRL)
+            EURO (EUR)
           </span>
-          <span id="kpi-eur-change" class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">--%</span>
+          <span id="kpi-eur-change" class="text-[10px] sm:text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">--%</span>
         </div>
-        <div class="flex items-baseline justify-between">
-          <div id="kpi-eur-price" class="text-lg font-bold font-mono text-white group-hover:text-blue-400 transition">R$ --</div>
+        <div class="flex items-baseline justify-between gap-1">
+          <div id="kpi-eur-price" class="text-base sm:text-lg font-bold font-mono text-white group-hover:text-blue-400 transition">R$ --</div>
           <span id="kpi-eur-range" class="text-[10px] font-mono text-slate-400">Máx: --</span>
         </div>
       </div>
 
       <!-- Card 4: TAXA SELIC & CDI (BANCO CENTRAL) -->
-      <div onclick="switchCenterTab('valuation')" class="glass-panel rounded-xl p-3 cursor-pointer hover:border-amber-500/50 transition group">
+      <div onclick="openMobileValuation()" class="glass-panel rounded-xl p-2.5 sm:p-3 cursor-pointer hover:border-amber-500/50 transition group min-w-[165px] sm:min-w-[185px] lg:min-w-0 shrink-0 snap-start">
         <div class="flex items-center justify-between mb-1">
-          <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
+          <span class="text-[10px] sm:text-[11px] font-semibold text-slate-400 flex items-center gap-1">
             <i data-lucide="landmark" class="w-3.5 h-3.5 text-amber-400"></i>
-            SELIC / CDI (BCB)
+            SELIC / CDI
           </span>
-          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">COPOM</span>
+          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">COPOM</span>
         </div>
-        <div class="flex items-baseline justify-between">
-          <div id="kpi-selic-val" class="text-lg font-bold font-mono text-amber-400">--% <span class="text-xs font-normal text-slate-400">a.a.</span></div>
-          <span id="kpi-cdi-val" class="text-[11px] font-mono text-slate-300">CDI: --%</span>
+        <div class="flex items-baseline justify-between gap-1">
+          <div id="kpi-selic-val" class="text-base sm:text-lg font-bold font-mono text-amber-400">--% <span class="text-xs font-normal text-slate-400">a.a.</span></div>
+          <span id="kpi-cdi-val" class="text-[10px] font-mono text-slate-300">CDI: --%</span>
         </div>
       </div>
 
       <!-- Card 5: IPCA & JURO REAL BRASIL -->
-      <div onclick="switchCenterTab('valuation')" class="glass-panel rounded-xl p-3 cursor-pointer hover:border-purple-500/50 transition group">
+      <div onclick="openMobileValuation()" class="glass-panel rounded-xl p-2.5 sm:p-3 cursor-pointer hover:border-purple-500/50 transition group min-w-[165px] sm:min-w-[185px] lg:min-w-0 shrink-0 snap-start">
         <div class="flex items-center justify-between mb-1">
-          <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
+          <span class="text-[10px] sm:text-[11px] font-semibold text-slate-400 flex items-center gap-1">
             <i data-lucide="percent" class="w-3.5 h-3.5 text-purple-400"></i>
-            IPCA & JURO REAL
+            IPCA & REAL
           </span>
-          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">IBGE/BCB</span>
+          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">IBGE</span>
         </div>
-        <div class="flex items-baseline justify-between">
-          <div id="kpi-ipca-val" class="text-lg font-bold font-mono text-white">--% <span class="text-xs font-normal text-slate-400">12m</span></div>
-          <span id="kpi-real-rate" class="text-[11px] font-mono text-emerald-400">Real: +--%</span>
+        <div class="flex items-baseline justify-between gap-1">
+          <div id="kpi-ipca-val" class="text-base sm:text-lg font-bold font-mono text-white">--% <span class="text-xs font-normal text-slate-400">12m</span></div>
+          <span id="kpi-real-rate" class="text-[10px] font-mono text-emerald-400">Real: +--%</span>
         </div>
       </div>
 
       <!-- Card 6: BITCOIN STREAM (WEBSOCKET SUB-SEGUNDO) -->
-      <div onclick="selectCustomTradingView('BINANCE:BTCUSDT', 'Bitcoin (BTC/USDT Real-Time)')" class="glass-panel rounded-xl p-3 cursor-pointer hover:border-amber-500/50 transition group" id="card-btc">
+      <div onclick="selectCustomTradingView('BINANCE:BTCUSDT', 'Bitcoin (BTC/USDT Real-Time)')" class="glass-panel rounded-xl p-2.5 sm:p-3 cursor-pointer hover:border-amber-500/50 transition group min-w-[165px] sm:min-w-[185px] lg:min-w-0 shrink-0 snap-start" id="card-btc">
         <div class="flex items-center justify-between mb-1">
-          <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
+          <span class="text-[10px] sm:text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-            BITCOIN (LIVE WS)
+            BITCOIN (WS)
           </span>
-          <span id="kpi-btc-change" class="text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">--%</span>
+          <span id="kpi-btc-change" class="text-[10px] sm:text-[11px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">--%</span>
         </div>
-        <div class="flex items-baseline justify-between">
-          <div id="kpi-btc-usd" class="text-lg font-bold font-mono text-white group-hover:text-amber-400 transition">$ --</div>
-          <span id="kpi-btc-brl" class="text-[10px] font-mono text-slate-400">R$ --</span>
+        <div class="flex items-baseline justify-between gap-1">
+          <div id="kpi-btc-usd" class="text-base sm:text-lg font-bold font-mono text-white group-hover:text-amber-400 transition">$ --</div>
+          <span id="kpi-btc-brl" class="text-[10px] font-mono text-slate-400 truncate">R$ --</span>
         </div>
       </div>
 
     </div>
   </section>
 
-  <!-- 4. GRID PRINCIPAL DO TERMINAL (3 COLUNAS) -->
-  <main class="max-w-[1920px] w-full mx-auto px-4 py-3 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3">
+  <!-- 4. GRID PRINCIPAL DO TERMINAL (3 COLUNAS NO DESKTOP, ABAS APP NO MOBILE) -->
+  <main class="max-w-[1920px] w-full mx-auto px-3 sm:px-4 py-2.5 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-3">
 
     <!-- COLUNA ESQUERDA (3 cols): WATCHLIST & SCANNER DE AÇÕES B3 -->
-    <aside class="lg:col-span-3 flex flex-col glass-panel rounded-xl overflow-hidden h-[780px]">
+    <aside id="col-scanner" class="hidden lg:flex lg:col-span-3 flex-col glass-panel rounded-xl overflow-hidden h-[calc(100vh-225px)] min-h-[520px] lg:h-[780px]">
       <!-- Cabeçalho do Scanner -->
       <div class="p-3 border-b border-terminal-border bg-terminal-panel/60">
         <div class="flex items-center justify-between mb-2">
@@ -352,40 +358,40 @@
     </aside>
 
     <!-- COLUNA CENTRAL (6 cols): GRÁFICO PRO, FUNDAMENTOS, MAPA DE CALOR & SCREENER -->
-    <section class="lg:col-span-6 flex flex-col gap-3">
+    <section id="col-center" class="flex lg:col-span-6 flex-col gap-3">
       
       <!-- Header de Raio-X do Ativo Selecionado -->
-      <div class="glass-panel rounded-xl p-3.5">
-        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-terminal-border">
+      <div class="glass-panel rounded-xl p-3 sm:p-3.5">
+        <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-3 pb-2.5 sm:pb-3 border-b border-terminal-border">
           <!-- Identificação do Ativo -->
-          <div class="flex items-center gap-3">
-            <img id="activeStockLogo" src="https://icons.brapi.dev/icons/PETR4.svg" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=B3&background=1e293b&color=38bdf8&bold=true'" class="w-10 h-10 rounded-lg bg-terminal-card p-1 border border-terminal-border object-contain" />
-            <div>
-              <div class="flex items-center gap-2">
-                <h2 id="activeStockSymbol" class="text-xl font-extrabold font-mono text-white tracking-tight">PETR4</h2>
+          <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <img id="activeStockLogo" src="https://icons.brapi.dev/icons/PETR4.svg" alt="Logo" onerror="this.src='https://ui-avatars.com/api/?name=B3&background=1e293b&color=38bdf8&bold=true'" class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-terminal-card p-1 border border-terminal-border object-contain shrink-0" />
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h2 id="activeStockSymbol" class="text-lg sm:text-xl font-extrabold font-mono text-white tracking-tight">PETR4</h2>
                 <button onclick="toggleFavoriteCurrent()" id="favStarBtn" title="Favoritar na Carteira" class="text-slate-400 hover:text-amber-400 transition">
                   <i data-lucide="star" class="w-4 h-4"></i>
                 </button>
-                <span id="activeStockSector" class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">Petróleo e Gás</span>
+                <span id="activeStockSector" class="text-[9px] sm:text-[10px] font-mono px-1.5 sm:px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 truncate max-w-[140px] sm:max-w-none">Petróleo e Gás</span>
               </div>
-              <p id="activeStockName" class="text-xs text-slate-400">Petróleo Brasileiro S.A. — Petrobras</p>
+              <p id="activeStockName" class="text-[11px] sm:text-xs text-slate-400 truncate max-w-[200px] sm:max-w-none">Petróleo Brasileiro S.A. — Petrobras</p>
             </div>
           </div>
 
           <!-- Preço Principal & Variação -->
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-3 ml-auto">
             <div class="text-right">
-              <div class="flex items-baseline justify-end gap-2">
-                <span id="activeStockPrice" class="text-2xl font-extrabold font-mono text-white">R$ --</span>
-                <span id="activeStockChange" class="text-xs font-mono font-semibold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400">--%</span>
+              <div class="flex items-baseline justify-end gap-1.5 sm:gap-2">
+                <span id="activeStockPrice" class="text-xl sm:text-2xl font-extrabold font-mono text-white">R$ --</span>
+                <span id="activeStockChange" class="text-[11px] sm:text-xs font-mono font-semibold px-1.5 sm:px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400">--%</span>
               </div>
-              <p id="activeStockVolume" class="text-[11px] font-mono text-slate-400 mt-0.5">Volume Dia: R$ --</p>
+              <p id="activeStockVolume" class="text-[10px] sm:text-[11px] font-mono text-slate-400 mt-0.5">Volume Dia: R$ --</p>
             </div>
           </div>
         </div>
 
         <!-- Mini-Grid de Indicadores Fundamentalistas do Ativo -->
-        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-3 text-xs">
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-2 pt-2.5 sm:pt-3 text-xs">
           <div class="bg-terminal-card/70 rounded-lg p-2 border border-terminal-border/60">
             <span class="text-[10px] text-slate-400 block">Valor de Mercado</span>
             <span id="fund-mktcap" class="font-mono font-semibold text-white">--</span>
@@ -410,28 +416,28 @@
       </div>
 
       <!-- Abas de Navegação do Painel Central -->
-      <div class="glass-panel rounded-xl flex-1 flex flex-col overflow-hidden min-h-[615px]">
-        <div class="flex items-center justify-between px-3 py-2 border-b border-terminal-border bg-terminal-panel/70 overflow-x-auto">
-          <div class="flex items-center gap-1.5">
-            <button onclick="switchCenterTab('chart')" id="center-tab-chart" class="center-tab active-tab px-3 py-1.5 rounded-lg text-xs font-medium border border-transparent flex items-center gap-1.5 transition whitespace-nowrap">
+      <div class="glass-panel rounded-xl flex-1 flex flex-col overflow-hidden min-h-[470px] sm:min-h-[615px]">
+        <div class="flex items-center justify-between px-2.5 sm:px-3 py-2 border-b border-terminal-border bg-terminal-panel/70 overflow-x-auto no-scrollbar">
+          <div class="flex items-center gap-1 sm:gap-1.5">
+            <button onclick="switchCenterTab('chart')" id="center-tab-chart" class="center-tab active-tab px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-transparent flex items-center gap-1.5 transition whitespace-nowrap">
               <i data-lucide="candlestick-chart" class="w-3.5 h-3.5"></i>
               Gráfico Tempo Real
             </button>
-            <button onclick="switchCenterTab('fundamentals')" id="center-tab-fundamentals" class="center-tab px-3 py-1.5 rounded-lg text-xs font-medium border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 transition whitespace-nowrap">
+            <button onclick="switchCenterTab('fundamentals')" id="center-tab-fundamentals" class="center-tab px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 transition whitespace-nowrap">
               <i data-lucide="file-spreadsheet" class="w-3.5 h-3.5"></i>
-              Raio-X Fundamentalista (DRE/Balanço)
+              DRE & Balanço
             </button>
-            <button onclick="switchCenterTab('heatmap')" id="center-tab-heatmap" class="center-tab px-3 py-1.5 rounded-lg text-xs font-medium border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 transition whitespace-nowrap">
+            <button onclick="switchCenterTab('heatmap')" id="center-tab-heatmap" class="center-tab px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 transition whitespace-nowrap">
               <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
               Mapa de Calor B3
             </button>
-            <button onclick="switchCenterTab('screener')" id="center-tab-screener" class="center-tab px-3 py-1.5 rounded-lg text-xs font-medium border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 transition whitespace-nowrap">
+            <button onclick="switchCenterTab('screener')" id="center-tab-screener" class="center-tab px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 transition whitespace-nowrap">
               <i data-lucide="filter" class="w-3.5 h-3.5"></i>
-              Screener Completo B3
+              Screener B3
             </button>
-            <button onclick="switchCenterTab('valuation')" id="center-tab-valuation" class="center-tab px-3 py-1.5 rounded-lg text-xs font-medium border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 transition whitespace-nowrap">
+            <button onclick="switchCenterTab('valuation')" id="center-tab-valuation" class="center-tab px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium border border-transparent text-slate-400 hover:text-white flex items-center gap-1.5 transition whitespace-nowrap">
               <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
-              Valuation & Simulador
+              Valuation & CDI
             </button>
           </div>
         </div>
@@ -440,27 +446,27 @@
         <div class="flex-1 relative bg-terminal-bg">
           
           <!-- ABA 1: GRÁFICO AVANÇADO EM TEMPO REAL (TRADINGVIEW) -->
-          <div id="view-chart" class="center-view w-full h-[565px]">
+          <div id="view-chart" class="center-view w-full h-[430px] sm:h-[565px]">
             <div id="tv_advanced_chart" class="w-full h-full"></div>
           </div>
 
           <!-- ABA 2: FUNDAMENTOS COMPLETOS & MÚLTIPLOS DO ATIVO (TRADINGVIEW FINANCIALS) -->
-          <div id="view-fundamentals" class="center-view hidden w-full h-[565px] overflow-y-auto p-2">
+          <div id="view-fundamentals" class="center-view hidden w-full h-[430px] sm:h-[565px] overflow-y-auto p-2">
             <div id="tv_financials_container" class="w-full h-full"></div>
           </div>
 
           <!-- ABA 3: MAPA DE CALOR DA BOLSA (STOCK HEATMAP) -->
-          <div id="view-heatmap" class="center-view hidden w-full h-[565px]">
+          <div id="view-heatmap" class="center-view hidden w-full h-[430px] sm:h-[565px]">
             <div id="tv_heatmap_container" class="w-full h-full"></div>
           </div>
 
           <!-- ABA 4: SCREENER FUNDAMENTALISTA E TÉCNICO B3 -->
-          <div id="view-screener" class="center-view hidden w-full h-[565px]">
+          <div id="view-screener" class="center-view hidden w-full h-[430px] sm:h-[565px]">
             <div id="tv_screener_container" class="w-full h-full"></div>
           </div>
 
           <!-- ABA 5: CALCULADORA DE VALUATION (GRAHAM, BAZIN & RENDA FIXA SELIC/CDI) -->
-          <div id="view-valuation" class="center-view hidden w-full h-[565px] overflow-y-auto p-5 space-y-5">
+          <div id="view-valuation" class="center-view hidden w-full h-[430px] sm:h-[565px] overflow-y-auto p-3.5 sm:p-5 space-y-4 sm:space-y-5">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               
               <!-- Calculadora de Preço Justo (Benjamin Graham) -->
@@ -581,7 +587,7 @@
     </section>
 
     <!-- COLUNA DIREITA (3 cols): TERMÔMETRO TÉCNICO, SETORES & ALERTAS -->
-    <aside class="lg:col-span-3 flex flex-col gap-3 h-[780px]">
+    <aside id="col-tech" class="hidden lg:flex lg:col-span-3 flex-col gap-3 h-auto lg:h-[780px]">
       
       <!-- 1. Velocímetro de Análise Técnica em Tempo Real (TradingView Technical Analysis) -->
       <div class="glass-panel rounded-xl overflow-hidden flex flex-col h-[375px]">
@@ -596,7 +602,7 @@
       </div>
 
       <!-- 2. Performance por Setor da B3 & Monitor de Alertas -->
-      <div class="glass-panel rounded-xl flex-1 flex flex-col overflow-hidden">
+      <div class="glass-panel rounded-xl flex-1 flex flex-col overflow-hidden min-h-[380px] lg:min-h-0">
         <div class="flex border-b border-terminal-border bg-terminal-panel/60 text-xs font-medium">
           <button onclick="switchRightTab('sectors')" id="right-tab-sectors" class="flex-1 py-2 px-3 active-tab border-b-2 border-blue-500 text-center transition">
             📊 Raio-X Setorial B3
@@ -645,6 +651,26 @@
     </aside>
 
   </main>
+
+  <!-- 5. BARRA DE NAVEGAÇÃO INFERIOR MOBILE (ESTILO HOME BROKER APP) -->
+  <nav id="mobileBottomNav" class="lg:hidden fixed bottom-0 inset-x-0 z-40 glass-panel border-t border-terminal-border px-2 py-1.5 flex items-center justify-around">
+    <button onclick="switchMobileSection('center')" id="mob-nav-center" class="mob-nav-btn flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-blue-400 bg-blue-500/10 font-medium text-[11px] transition">
+      <i data-lucide="candlestick-chart" class="w-4 h-4"></i>
+      <span>Gráfico & Ativo</span>
+    </button>
+    <button onclick="switchMobileSection('scanner')" id="mob-nav-scanner" class="mob-nav-btn flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-slate-400 font-medium text-[11px] transition">
+      <i data-lucide="layers" class="w-4 h-4"></i>
+      <span>Ações B3</span>
+    </button>
+    <button onclick="switchMobileSection('tech')" id="mob-nav-tech" class="mob-nav-btn flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-slate-400 font-medium text-[11px] transition">
+      <i data-lucide="gauge" class="w-4 h-4"></i>
+      <span>Técnico & Setor</span>
+    </button>
+    <button onclick="openMobileValuation()" id="mob-nav-valuation" class="mob-nav-btn flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-slate-400 font-medium text-[11px] transition">
+      <i data-lucide="calculator" class="w-4 h-4"></i>
+      <span>Valuation</span>
+    </button>
+  </nav>
 
   <!-- MODAL DE CONFIGURAÇÃO DE API (OPCIONAL) -->
   <div id="apiModal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
@@ -1321,6 +1347,11 @@
       renderStockList();
       updateActiveStockHeader();
 
+      // No celular (<1024px), ao tocar em uma ação da lista B3, muda automaticamente para a visão de Gráfico/Ativo
+      if (window.innerWidth < 1024) {
+        switchMobileSection('center');
+      }
+
       // Se o ativo ainda não estiver no detailedCache, tenta buscar detalhes na Brapi
       if (!state.detailedCache[state.selectedSymbol] && symbol !== 'IBOV') {
         await fetchDetailedFundamentals([state.selectedSymbol]);
@@ -1608,6 +1639,41 @@
         viewAlerts.classList.remove('hidden');
         viewSectors.classList.add('hidden');
       }
+    }
+
+    // Navegação inferior estilo App no Mobile (<1024px)
+    function switchMobileSection(section) {
+      const colScanner = document.getElementById('col-scanner');
+      const colCenter = document.getElementById('col-center');
+      const colTech = document.getElementById('col-tech');
+
+      if (colScanner && colCenter && colTech) {
+        colScanner.className = `${section === 'scanner' ? 'flex' : 'hidden'} lg:flex lg:col-span-3 flex-col glass-panel rounded-xl overflow-hidden h-[calc(100vh-225px)] min-h-[520px] lg:h-[780px]`;
+        colCenter.className = `${section === 'center' ? 'flex' : 'hidden'} lg:flex lg:col-span-6 flex-col gap-3`;
+        colTech.className = `${section === 'tech' ? 'flex' : 'hidden'} lg:flex lg:col-span-3 flex-col gap-3 h-auto lg:h-[780px]`;
+      }
+
+      document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+        btn.className = 'mob-nav-btn flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-slate-400 font-medium text-[11px] transition';
+      });
+      const activeNav = document.getElementById(`mob-nav-${section}`);
+      if (activeNav) {
+        activeNav.className = 'mob-nav-btn flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-blue-400 bg-blue-500/10 font-medium text-[11px] transition';
+      }
+    }
+
+    function openMobileValuation() {
+      if (window.innerWidth < 1024) {
+        switchMobileSection('center');
+        document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+          btn.className = 'mob-nav-btn flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-slate-400 font-medium text-[11px] transition';
+        });
+        const valBtn = document.getElementById('mob-nav-valuation');
+        if (valBtn) {
+          valBtn.className = 'mob-nav-btn flex flex-col items-center gap-0.5 px-3 py-1 rounded-lg text-blue-400 bg-blue-500/10 font-medium text-[11px] transition';
+        }
+      }
+      switchCenterTab('valuation');
     }
 
     // =========================================================================
